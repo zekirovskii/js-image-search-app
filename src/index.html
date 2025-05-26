@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
-    <link rel="stylesheet" href="./css/styles.css" />
-  </head>
-  <body>
-    <load src="./partials/header.html" icon-path="img/sprite.svg#logo" />
 
-    <main>
-      <!-- Loads the specified .html file -->
-      <load src="./partials/vite-promo.html" />
-      <load src="./partials/badges.html" />
-    </main>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <script type="module" src="./js/pixabay-api.js" defer></script>
+  <script type="module" src="./js/render-functions.js" defer></script>
+  <script type="module" src="./main.js" defer></script>
+</head>
 
-    <load src="./partials/footer.html" />
+<body>
+  <form id="searchForm" class="form">
+    <input type="text" id="searchInput" placeholder="Search images..." required />
+    <button type="submit" id="searchButton">Search</button>
+  </form>
 
-    <script type="module" src="./main.js"></script>
-  </body>
+  <span id="loader" class="hidden">Loading images, please wait...</span>
+
+  <div class="container">
+    <ul class="gallery"></ul>
+    <button id="loadMoreBtn" class="hidden">Load more</button>
+  </div>
+  
+
+</body>
+
 </html>
