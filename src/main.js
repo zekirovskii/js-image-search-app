@@ -9,9 +9,8 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 
 let searchQuery = '';
 let page = 1;
-const perPage = 40;
+let perPage = 40; // ilk başta 40
 
-// Form gönderildiğinde
 form.addEventListener('submit', event => {
   event.preventDefault();
 
@@ -19,6 +18,7 @@ form.addEventListener('submit', event => {
   if (!searchQuery) return;
 
   page = 1;
+  perPage = 40; // ilk aramada 40 tane
   clearGallery();
   hideLoadMoreBtn();
   showLoader();
@@ -39,15 +39,18 @@ form.addEventListener('submit', event => {
       renderGallery(images);
       hideLoader();
 
-      // Galeri varsa load more düğmesini gösterir
+      // Load more düğmesini göster
       showLoadMoreBtn();
+
+      // Load more sonrası perPage'ı 20'ye düşür
+      perPage = 20;
     })
     .catch(error => {
       console.error('Fetch error:', error);
       iziToast.error({
         title: 'Error',
         message: 'We are sorry, but you have reached the end of search results.',
-        position:'topRight'
+        position: 'topRight'
       });
       hideLoader();
     });
@@ -75,13 +78,23 @@ loadMoreBtn.addEventListener('click', () => {
       renderGallery(images);
       hideLoader();
       showLoadMoreBtn();
+
+      // --- Burada sayfa kaydırma işlemi ---
+      const firstCard = document.querySelector('.gallery a');
+      if (firstCard) {
+        const cardHeight = firstCard.getBoundingClientRect().height;
+        window.scrollBy({
+          top: cardHeight * 2,
+          behavior: 'smooth'
+        });
+      }
     })
     .catch(error => {
       console.error('Fetch error:', error);
       iziToast.error({
         title: 'Error',
         message: 'We are sorry, but you have reached the end of search results.',
-        position:'topRight'
+        position: 'topRight'
       });
       hideLoader();
     });
