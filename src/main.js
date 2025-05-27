@@ -1,4 +1,3 @@
-// main.js
 import { fetchImages } from './js/pixabay-api.js';
 import { renderGallery, clearGallery, showLoader, hideLoader, showLoadMoreBtn, hideLoadMoreBtn } from './js/render-functions.js';
 import iziToast from 'izitoast';
@@ -10,9 +9,9 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 
 let searchQuery = '';
 let page = 1;
-let perPage = 40; // İlk başta 40
+let perPage = 40;
 
-form.addEventListener('submit', async (event) => {
+form.addEventListener('submit', async event => {
   event.preventDefault();
 
   searchQuery = input.value.trim();
@@ -25,14 +24,13 @@ form.addEventListener('submit', async (event) => {
   showLoader();
 
   try {
-    const response = await fetchImages(searchQuery, page, perPage);
-    const images = response.data.hits;
+    const data = await fetchImages(searchQuery, page, perPage);
+    const images = data.hits;
 
     if (images.length === 0) {
       iziToast.info({
         title: 'No Results',
         message: 'Sorry, there are no images matching your search query. Please try again!',
-        position: 'topRight',
       });
       hideLoader();
       return;
@@ -41,14 +39,13 @@ form.addEventListener('submit', async (event) => {
     renderGallery(images);
     hideLoader();
     showLoadMoreBtn();
-    perPage = 20; // Sonraki yüklemeler için 20'ye düşür
-
+    perPage = 20; 
   } catch (error) {
-    console.error('Fetch error:', error);
+    console.error('Error fetching images:', error);
     iziToast.error({
       title: 'Error',
-      message: 'An error occurred while fetching images.',
-      position: 'topRight',
+      message: 'An error occurred while fetching images. Please try again later.',
+      position: 'topRight'
     });
     hideLoader();
   }
@@ -60,14 +57,13 @@ loadMoreBtn.addEventListener('click', async () => {
   hideLoadMoreBtn();
 
   try {
-    const response = await fetchImages(searchQuery, page, perPage);
-    const images = response.data.hits;
+    const data = await fetchImages(searchQuery, page, perPage);
+    const images = data.hits;
 
     if (images.length === 0) {
       iziToast.info({
         title: 'No More Results',
         message: 'No more images found.',
-        position: 'topRight',
       });
       hideLoader();
       hideLoadMoreBtn();
@@ -78,7 +74,6 @@ loadMoreBtn.addEventListener('click', async () => {
     hideLoader();
     showLoadMoreBtn();
 
-    // Sayfa kaydırma (scroll)
     const firstCard = document.querySelector('.gallery a');
     if (firstCard) {
       const cardHeight = firstCard.getBoundingClientRect().height;
@@ -87,13 +82,12 @@ loadMoreBtn.addEventListener('click', async () => {
         behavior: 'smooth'
       });
     }
-
   } catch (error) {
-    console.error('Fetch error:', error);
+    console.error('Error fetching images:', error);
     iziToast.error({
       title: 'Error',
-      message: 'We are sorry, but you have reached the end of search results.',
-      position: 'topRight',
+      message: 'An error occurred while fetching images. Please try again later.',
+      position: 'topRight'
     });
     hideLoader();
   }
