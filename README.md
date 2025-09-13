@@ -1,4 +1,4 @@
-# 🔎 Image Search App — JS HW 12
+# 🔎 Image Search App 
 
 A vanilla JS app that searches photos via **Pixabay API**, shows a gallery with **SimpleLightbox**, notifications with **iziToast**, and supports **pagination** with a “Load More” flow. Built with **Vite**, uses **Axios** + **async/await**, and keeps the console clean (no errors/warnings).
 
